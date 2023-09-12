@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { Database } from './database.js'
 import { buildRoutePath } from './utils/build-rout-path.js'
 import { dateFormatter } from './utils/date-formatter.js'
-import { Console } from 'node:console'
+
 
 
 const database = new Database
@@ -23,6 +23,18 @@ export const routes = [
         path: buildRoutePath('/tasks'),
         handler: (req,res) => {
             const { title,description,completed_at,created_at,update_at } = req.body
+
+            if (!title) {
+                return res.writeHead(400).end(
+                  JSON.stringify({ message: 'title is required' }),
+                )
+              }
+        
+              if (!description) {
+                return res.writeHead(400).end(
+                  JSON.stringify({message: 'description is required' })
+                )
+              }
             
             const task = {
                 id: randomUUID(),
@@ -47,7 +59,11 @@ export const routes = [
             const { title,description,completed_at,created_at,update_at } = req.body
             const { id } = req.params
 
-            console.log(req.body)
+            if (!title || !description) {
+                return res.writeHead(400).end(
+                  JSON.stringify({ message: 'title or description are required' })
+                )
+              }
             
             const task = {
                 title,
@@ -86,7 +102,7 @@ export const routes = [
                 description,
                 created_at,
                 update_at,
-                completed_at:dateFormatter(), 
+                completed_at: dateFormatter(), 
             }
 
              console.log(task)
