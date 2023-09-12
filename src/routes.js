@@ -22,7 +22,6 @@ export const routes = [
                 description: search
             })
 
-            // const data = database.select('tasks') 
             
             res.end(JSON.stringify(data))
         }
